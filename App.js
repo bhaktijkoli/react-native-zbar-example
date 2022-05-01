@@ -7,6 +7,10 @@
  */
 
 import React from 'react';
+import { launchImageLibrary } from 'react-native-image-picker'
+import { NativeModules } from 'react-native';
+const { ZBarModule } = NativeModules;
+
 import {
   SafeAreaView,
   StatusBar,
@@ -18,7 +22,33 @@ import {
 
 const App = () => {
   const onPressScan = () => {
-    alert("Hello")
+    launchImageLibrary(
+      {
+        selectionLimit: 1,
+        mediaType: 'photo',
+      },
+      imgRes => {
+        if (imgRes.assets && imgRes.assets?.length > 0) {
+          const { uri, fileName, type } = imgRes.assets[0]
+          if (
+            uri === undefined ||
+            fileName === undefined ||
+            type === undefined
+          ) {
+            // TODO: Size Check
+            // TODO: Show error msg
+            return
+          }
+          ZBarModule.scanImageFromURL(uri)
+            .then((result) => {
+              console.log({ result });
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        }
+      },
+    );
   }
   return (
     <SafeAreaView style={styles.background}>
