@@ -27,6 +27,10 @@ import java.util.HashMap;
 public class ZBarModule extends ReactContextBaseJavaModule {
     private static final String TAG = "ZBarModule";
 
+    static {
+        System.loadLibrary("iconv");
+    }
+
     ZBarModule(ReactApplicationContext context) {
         super(context);
     }

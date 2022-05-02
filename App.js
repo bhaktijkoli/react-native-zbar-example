@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { launchImageLibrary } from 'react-native-image-picker'
+import { launchCamera } from 'react-native-image-picker'
 import { NativeModules } from 'react-native';
 const { ZBarModule } = NativeModules;
 
@@ -22,7 +22,7 @@ import {
 
 const App = () => {
   const onPressScan = () => {
-    launchImageLibrary(
+    launchCamera(
       {
         selectionLimit: 1,
         mediaType: 'photo',
@@ -30,6 +30,7 @@ const App = () => {
       imgRes => {
         if (imgRes.assets && imgRes.assets?.length > 0) {
           const { uri, fileName, type } = imgRes.assets[0]
+          console.log({ uri, fileName, type })
           if (
             uri === undefined ||
             fileName === undefined ||
