@@ -19,9 +19,17 @@ import {
   Text,
   View,
 } from 'react-native';
+import { useState } from 'react';
+import Camera from './Camera';
 
 const App = () => {
-  const onPressScan = () => {
+  const [isRNCameraActive, setRNCameraActive] = useState(false);
+
+  const handleRNCamera = () => {
+    setRNCameraActive(true)
+  }
+
+  const handleZBarCamera = () => {
     launchCamera(
       {
         selectionLimit: 1,
@@ -54,15 +62,25 @@ const App = () => {
   return (
     <SafeAreaView style={styles.background}>
       <StatusBar barStyle={'dark-content'} />
-      <View
-        style={[styles.background, styles.container]}>
-        <Button
-          style={styles.button}
-          onPress={onPressScan}
-          title="Scan"
-          color="#841584"
-        />
-      </View>
+      {
+        isRNCameraActive ? <Camera /> : (
+          <View
+            style={[styles.background, styles.container]}>
+            <Button
+              style={styles.button}
+              onPress={handleRNCamera}
+              title="Open RN Camera"
+              color="#841584"
+            />
+            <Button
+              style={styles.button}
+              onPress={handleZBarCamera}
+              title="Open ZBar Camera"
+              color="#841584"
+            />
+          </View>
+        )
+      }
     </SafeAreaView>
   );
 };
@@ -79,8 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   button: {
-    width: '100px',
-    backgroundColor: 'red',
+    marginBottom: 10,
   }
 });
 
