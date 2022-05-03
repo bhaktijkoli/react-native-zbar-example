@@ -21,6 +21,7 @@ import net.sourceforge.zbar.SymbolSet;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -81,13 +82,19 @@ public class ZBarModule extends ReactContextBaseJavaModule {
         ImageScanner imageScanner = new ImageScanner();
         imageScanner.setConfig(0, Config.X_DENSITY, 3);
         imageScanner.setConfig(0, Config.Y_DENSITY, 3);
+        imageScanner.setConfig(0, Config.ENABLE, 0);
+        imageScanner.setConfig(Symbol.CODE128, Config.ENABLE, 1);
         // Start Scan
         int result = imageScanner.scanImage(image);
         String resultString = "";
         if (result != 0) {
             SymbolSet symbolSet = imageScanner.getResults();
             for (Symbol symbol : symbolSet) {
-                resultString = symbol.getData();
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                    resultString = new String(symbol.getDataBytes(), StandardCharsets.UTF_8);
+                } else {
+                    resultString = symbol.getData();
+                }
                 Log.d(TAG, "scanImageFromURL Result: " + resultString);
             }
         } else {
