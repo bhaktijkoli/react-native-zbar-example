@@ -1,5 +1,8 @@
 package com.reactnativezbar.zbar;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -38,6 +41,14 @@ public class ZBarModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "ZBarModule";
+    }
+
+    @ReactMethod
+    public void start() {
+        ReactApplicationContext context = getReactApplicationContext();
+        Intent intent = new Intent(context, CameraActivity.class);
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
     @ReactMethod
     public void scanImageFromURL(String imageUrl, Promise promise) {

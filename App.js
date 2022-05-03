@@ -30,34 +30,35 @@ const App = () => {
   }
 
   const handleZBarCamera = () => {
-    launchCamera(
-      {
-        selectionLimit: 1,
-        mediaType: 'photo',
-      },
-      imgRes => {
-        if (imgRes.assets && imgRes.assets?.length > 0) {
-          const { uri, fileName, type } = imgRes.assets[0]
-          console.log({ uri, fileName, type })
-          if (
-            uri === undefined ||
-            fileName === undefined ||
-            type === undefined
-          ) {
-            // TODO: Size Check
-            // TODO: Show error msg
-            return
-          }
-          ZBarModule.scanImageFromURL(uri)
-            .then((result) => {
-              console.log({ result });
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-        }
-      },
-    );
+    ZBarModule.start();
+    // launchCamera(
+    //   {
+    //     selectionLimit: 1,
+    //     mediaType: 'photo',
+    //   },
+    //   imgRes => {
+    //     if (imgRes.assets && imgRes.assets?.length > 0) {
+    //       const { uri, fileName, type } = imgRes.assets[0]
+    //       console.log({ uri, fileName, type })
+    //       if (
+    //         uri === undefined ||
+    //         fileName === undefined ||
+    //         type === undefined
+    //       ) {
+    //         // TODO: Size Check
+    //         // TODO: Show error msg
+    //         return
+    //       }
+    //       ZBarModule.scanImageFromURL(uri)
+    //         .then((result) => {
+    //           console.log({ result });
+    //         })
+    //         .catch((err) => {
+    //           console.log(err)
+    //         })
+    //     }
+    //   },
+    // );
   }
   return (
     <SafeAreaView style={styles.background}>
